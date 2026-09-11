@@ -51,3 +51,4 @@ jobs:
           context: .
           push: false
           tags: wathaq-api:ci-check
+          # The build will fail if the Dockerfile has errors or if the build context is invalid.
