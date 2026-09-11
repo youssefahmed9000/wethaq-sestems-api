@@ -18,7 +18,7 @@ export class ApiFeatures<T> implements IQueryBuilder<T> {
 filter(): this {
   const queryObj: any = { ...this.queryString };
 
-  const excludedFields = ['page', 'sort', 'limit', 'fields', 'keyword', 'conversationId'];
+  const excludedFields = ['page', 'sort', 'limit', 'fields', 'keyword'];
   excludedFields.forEach((field) => delete queryObj[field]);
 
   //  convert comma-separated values → $in
