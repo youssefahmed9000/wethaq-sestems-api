@@ -13,32 +13,30 @@ import { StorageModule } from 'src/common/storage/storage.module';
 
 @Module({
   imports: [
-        MongooseModule.forFeature([
-      { name: User.name, schema: UserSchema },
-      
-    ]),
-    
-        JwtModule.registerAsync({
-          inject: [ConfigService],
-          useFactory: (config: ConfigService): JwtModuleOptions => ({
-            secret: config.getOrThrow<string>('jwt.access.secret'),
-    
-            signOptions: {
-              expiresIn:
-                config.getOrThrow<StringValue>('jwt.access.expiresIn'),
-            },
-          }),
-        }),
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
 
-         AuthModule,
-         StorageModule,
+    JwtModule.registerAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService): JwtModuleOptions => ({
+        secret: config.getOrThrow<string>('jwt.access.secret'),
 
+        signOptions: {
+          expiresIn: config.getOrThrow<StringValue>('jwt.access.expiresIn'),
+        },
+      }),
+    }),
+
+    AuthModule,
+    StorageModule,
   ],
   controllers: [UsersController],
-  providers: [UsersService,   UsersRepository,
+  providers: [
+    UsersService,
+    UsersRepository,
     {
-      provide: USERS_REPOSITORY,  
+      provide: USERS_REPOSITORY,
       useClass: UsersRepository,
-    },]
+    },
+  ],
 })
 export class UserModule {}

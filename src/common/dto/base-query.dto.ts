@@ -116,10 +116,9 @@ export class BuildQueryDto {
   @IsOptional()
   @IsNumberString()
   'size[lte]'?: string;
-@IsOptional()
-  conversationId:string
-  
-@IsOptional()
-  content:string
+  @IsOptional()
+  conversationId: string;
 
+  @IsOptional()
+  content: string;
 }

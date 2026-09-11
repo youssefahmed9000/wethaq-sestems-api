@@ -28,14 +28,14 @@ import { ParseObjectIdPipe } from '@nestjs/mongoose';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
-import {  CurrentUserId } from 'src/common/decorators/current-user.decorator';
+import { CurrentUserId } from 'src/common/decorators/current-user.decorator';
 import { UserRole } from './enums/roles.enum';
 import { SkipThrottle } from '@nestjs/throttler';
 import { Public } from 'src/common/decorators/public.decorator';
 
 @ApiTags('Users')
 @ApiBearerAuth()
-@Roles(UserRole.ADMIN,UserRole.DOCTOR)
+@Roles(UserRole.ADMIN, UserRole.DOCTOR)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -44,10 +44,7 @@ export class UsersController {
   @Public()
   @Post('create')
   @UseInterceptors(FilesInterceptor('images', 1))
-  create(
-    @Body() dto: CreateUserDto,
-    
-  ) {
+  create(@Body() dto: CreateUserDto) {
     return this.usersService.create(dto);
   }
 
@@ -60,10 +57,10 @@ export class UsersController {
   }
   @ApiOperation({ summary: 'Change user password' })
   @ApiOkResponse({ description: 'Password changed  successfully' })
- @Roles(UserRole.ADMIN,UserRole.DOCTOR,UserRole.PATIENT)
+  @Roles(UserRole.ADMIN, UserRole.DOCTOR, UserRole.PATIENT)
   @Patch('change-password')
   async changePassword(
-     @CurrentUserId() userId: string,
+    @CurrentUserId() userId: string,
     @Body() dto: ChangePasswordDto,
   ) {
     return this.usersService.changePassword(userId, dto);
@@ -82,7 +79,7 @@ export class UsersController {
   @ApiOperation({ summary: 'Update user' })
   @ApiOkResponse({ type: UserResponseDto })
   @UseInterceptors(FilesInterceptor('images', 1))
-  @Roles(UserRole.ADMIN,UserRole.DOCTOR,UserRole.PATIENT)
+  @Roles(UserRole.ADMIN, UserRole.DOCTOR, UserRole.PATIENT)
   @Patch('update-profile')
   async update(
     @CurrentUserId() id: string,
@@ -103,7 +100,6 @@ export class UsersController {
   @ApiOperation({ summary: 'Delete user permanently' })
   @ApiParam({ name: 'id', description: 'User ID' })
   @ApiOkResponse({ description: 'User deleted successfully' })
-  
   @Delete(':id/delete')
   async softDelete(@Param('id', ParseObjectIdPipe) id: string) {
     return this.usersService.softDelete(id);

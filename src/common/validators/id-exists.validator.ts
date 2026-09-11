@@ -15,14 +15,14 @@ export class ExistsValidator implements ValidatorConstraintInterface {
   constructor(@InjectConnection() private connection: Connection) {}
 
   async validate(id: string, args: ValidationArguments) {
-      if (!Types.ObjectId.isValid(id)) {
-    return false;
-  }
-     const model = this.connection.model(args.constraints[0]);
+    if (!Types.ObjectId.isValid(id)) {
+      return false;
+    }
+    const model = this.connection.model(args.constraints[0]);
 
-  const exists = await model.exists({ _id: id });
+    const exists = await model.exists({ _id: id });
 
-  return !!exists;
+    return !!exists;
   }
 
   defaultMessage(args: ValidationArguments) {

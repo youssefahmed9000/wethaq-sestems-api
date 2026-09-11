@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  Inject,
-  BadRequestException,
-} from '@nestjs/common';
+import { Injectable, Inject, BadRequestException } from '@nestjs/common';
 import * as storageProviderInterface from './interfaces/storage-provider.interface';
 import { fileTypeFromBuffer } from 'file-type';
 
@@ -13,7 +9,13 @@ export class StorageService {
     private readonly provider: storageProviderInterface.IStorageProvider,
   ) {}
 
-  private readonly allowedFolders = ['users', 'locations', 'projects','messages','images'];
+  private readonly allowedFolders = [
+    'users',
+    'locations',
+    'projects',
+    'messages',
+    'images',
+  ];
 
   /**
    * Validate folder
@@ -37,18 +39,12 @@ export class StorageService {
       throw new BadRequestException('Invalid file');
     }
 
-    const defaultTypes = [
-      'image/jpeg',
-      'image/png',
-      'image/webp',
-    ];
+    const defaultTypes = ['image/jpeg', 'image/png', 'image/webp'];
 
     const allowed = allowedTypes ?? defaultTypes;
 
     if (!allowed.includes(detected.mime)) {
-      throw new BadRequestException(
-        `Unsupported file type: ${detected.mime}`,
-      );
+      throw new BadRequestException(`Unsupported file type: ${detected.mime}`);
     }
   }
 
@@ -67,12 +63,9 @@ export class StorageService {
     this.validateFolder(folder);
     await this.validateFile(file, options?.allowedTypes);
 
-    return this.provider.upload(
-      file.buffer,
-      file.mimetype,
-      folder,
-      { isPrivate: options?.isPrivate },
-    );
+    return this.provider.upload(file.buffer, file.mimetype, folder, {
+      isPrivate: options?.isPrivate,
+    });
   }
 
   async uploadMultiple(
@@ -89,24 +82,24 @@ export class StorageService {
 
     this.validateFolder(folder);
 
- const uploads = await Promise.all(
-  files.map(async (file, index) => {
-    console.time(`Upload ${index}`);
+    const uploads = await Promise.all(
+      files.map(async (file, index) => {
+        console.time(`Upload ${index}`);
 
-    await this.validateFile(file, options?.allowedTypes);
+        await this.validateFile(file, options?.allowedTypes);
 
-    const result = await this.provider.upload(
-      file.buffer,
-      file.mimetype,
-      folder,
-      { isPrivate: options?.isPrivate },
+        const result = await this.provider.upload(
+          file.buffer,
+          file.mimetype,
+          folder,
+          { isPrivate: options?.isPrivate },
+        );
+
+        console.timeEnd(`Upload ${index}`);
+
+        return result;
+      }),
     );
-
-    console.timeEnd(`Upload ${index}`);
-
-    return result;
-  }),
-);
 
     return uploads;
   }

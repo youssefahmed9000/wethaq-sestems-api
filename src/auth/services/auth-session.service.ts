@@ -1,12 +1,14 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable } from '@nestjs/common';
 
-import { TokenService } from "./token.service";
-import { UserDocument } from "src/users/schema/users.schema";
-import { USERS_REPOSITORY, type IUsersRepository } from "src/users/repositories/users.repository.interface";
+import { TokenService } from './token.service';
+import { UserDocument } from 'src/users/schema/users.schema';
+import {
+  USERS_REPOSITORY,
+  type IUsersRepository,
+} from 'src/users/repositories/users.repository.interface';
 
 @Injectable()
 export class AuthSessionService {
-
   constructor(
     @Inject(USERS_REPOSITORY)
     private readonly usersRepository: IUsersRepository,
@@ -19,10 +21,9 @@ export class AuthSessionService {
       user.role,
     );
 
-    const hashedRefreshToken =
-      await this.tokenService.hashRefreshToken(
-        tokens.refreshToken,
-      );
+    const hashedRefreshToken = await this.tokenService.hashRefreshToken(
+      tokens.refreshToken,
+    );
 
     await this.usersRepository.updateById(user._id.toString(), {
       refreshToken: hashedRefreshToken,
@@ -30,6 +31,4 @@ export class AuthSessionService {
 
     return tokens;
   }
-
-
 }

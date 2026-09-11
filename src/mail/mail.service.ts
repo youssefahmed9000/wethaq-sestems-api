@@ -1,7 +1,4 @@
-import {
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Resend } from 'resend';
 
@@ -9,12 +6,14 @@ import { Resend } from 'resend';
 export class MailService {
   private readonly resend: Resend;
   constructor(private readonly configService: ConfigService) {
-    this.resend = new Resend(this.configService.getOrThrow<string>('RESEND_API_KEY'));
+    this.resend = new Resend(
+      this.configService.getOrThrow<string>('RESEND_API_KEY'),
+    );
   }
-  async sendResetPasswordEmail( 
-      email: string,
-      fullName: string,
-      resetCode: string,
+  async sendResetPasswordEmail(
+    email: string,
+    fullName: string,
+    resetCode: string,
   ): Promise<void> {
     const { error } = await this.resend.emails.send({
       from: this.configService.getOrThrow('MAIL_FROM'),
@@ -32,9 +31,7 @@ export class MailService {
     });
 
     if (error) {
-      throw new InternalServerErrorException(
-        'Failed to send email.',
-      );
+      throw new InternalServerErrorException('Failed to send email.');
     }
   }
 }

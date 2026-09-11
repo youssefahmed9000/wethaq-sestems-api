@@ -38,8 +38,6 @@ export class UpdateUserDto {
   })
   phone: string;
 
-
-
   @IsOptional()
   @IsEnum(['male', 'female'])
   gender: string;

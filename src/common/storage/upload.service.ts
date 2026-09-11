@@ -21,11 +21,9 @@ export class UploadService {
       throw new BadRequestException('Maximum 10 images allowed');
     }
 
-    return this.storageService.uploadMultiple(
-      files,
-      'images',
-      { allowedTypes: ALLOWED_IMAGE_TYPES },
-    );
+    return this.storageService.uploadMultiple(files, 'images', {
+      allowedTypes: ALLOWED_IMAGE_TYPES,
+    });
   }
 
   //  Single file upload
@@ -34,29 +32,27 @@ export class UploadService {
       throw new BadRequestException('Image file is required');
     }
 
-    return this.storageService.uploadSingle(
-      file,
-      'images',
-      { allowedTypes: ALLOWED_IMAGE_TYPES },
-    );
+    return this.storageService.uploadSingle(file, 'images', {
+      allowedTypes: ALLOWED_IMAGE_TYPES,
+    });
   }
 
   //  Replace multiple
   async replace(oldImages: string[], newFiles?: Express.Multer.File[]) {
-  if (!newFiles?.length) return oldImages;
+    if (!newFiles?.length) return oldImages;
 
-  // Upload first
-  const uploadedImages = await this.upload(newFiles);
+    // Upload first
+    const uploadedImages = await this.upload(newFiles);
 
-  // Delete old images (don't fail update if deletion fails)
-  try {
-    await this.deleteImages(oldImages);
-  } catch (error) {
-    console.error('Failed to delete old images:', error);
+    // Delete old images (don't fail update if deletion fails)
+    try {
+      await this.deleteImages(oldImages);
+    } catch (error) {
+      console.error('Failed to delete old images:', error);
+    }
+
+    return uploadedImages;
   }
-
-  return uploadedImages;
-}
 
   //  Delete multiple
   async deleteImages(imageUrls: string[]) {
@@ -78,26 +74,22 @@ export class UploadService {
     return relevantParts.join('/').replace(/\.[^/.]+$/, '');
   }
 
-async uploadChatFile(
-  file: Express.Multer.File,
-): Promise<UploadChatFileResponse> {
-  if (!file) {
-    throw new BadRequestException('File is required');
-  }
+  async uploadChatFile(
+    file: Express.Multer.File,
+  ): Promise<UploadChatFileResponse> {
+    if (!file) {
+      throw new BadRequestException('File is required');
+    }
 
-  const fileUrl = await this.storageService.uploadSingle(
-    file,
-    'messages',
-    {
+    const fileUrl = await this.storageService.uploadSingle(file, 'messages', {
       allowedTypes: ALLOWED_IMAGE_TYPES,
-    },
-  );
+    });
 
-  return {
-    fileUrl,
-    fileName: file.originalname,
-    fileSize: file.size,
-    mimeType: file.mimetype,
-  };
-}
+    return {
+      fileUrl,
+      fileName: file.originalname,
+      fileSize: file.size,
+      mimeType: file.mimetype,
+    };
+  }
 }

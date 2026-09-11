@@ -14,7 +14,6 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
 
-
 import { ReviewsModule } from './review/review.module';
 import { AboutUsModule } from './about-us/about-us.module';
 
@@ -61,9 +60,7 @@ import { AboutUsModule } from './about-us/about-us.module';
     StorageModule,
     ReviewsModule,
     AboutUsModule,
-    MailModule
-
-
+    MailModule,
   ],
 
   providers: [

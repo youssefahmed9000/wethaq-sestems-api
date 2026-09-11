@@ -8,7 +8,7 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js';
 export function IsInternationalPhoneNumber(
   validationOptions?: ValidationOptions,
 ) {
-  return function (object: Object, propertyName: string) {
+  return function (object: object, propertyName: string) {
     registerDecorator({
       name: 'isInternationalPhoneNumber',
       target: object.constructor,

@@ -2,47 +2,38 @@ import { Document, Query } from 'mongoose';
 import { IPaginationResult } from '../contracts/pagination.interfaces';
 import { IQueryBuilder } from '../contracts/query-builder.interface';
 
-
 export class ApiFeatures<T> implements IQueryBuilder<T> {
   private mongooseQuery: Query<T[], T>;
   private queryString: Record<string, any>;
   public paginationResult?: IPaginationResult;
 
-  constructor(
-    mongooseQuery: Query<T[], T>,
-    queryString: Record<string, any>,
-  ) {
+  constructor(mongooseQuery: Query<T[], T>, queryString: Record<string, any>) {
     this.mongooseQuery = mongooseQuery;
     this.queryString = queryString;
   }
-filter(): this {
-  const queryObj: any = { ...this.queryString };
+  filter(): this {
+    const queryObj: any = { ...this.queryString };
 
-  const excludedFields = ['page', 'sort', 'limit', 'fields', 'keyword'];
-  excludedFields.forEach((field) => delete queryObj[field]);
+    const excludedFields = ['page', 'sort', 'limit', 'fields', 'keyword'];
+    excludedFields.forEach((field) => delete queryObj[field]);
 
-  //  convert comma-separated values → $in
-  Object.keys(queryObj).forEach((key) => {
-    if (typeof queryObj[key] === 'string' && queryObj[key].includes(',')) {
-      queryObj[key] = {
-        $in: queryObj[key]
-          .split(',')
-          .map((val: string) => val.trim()),
-      };
-    }
-  });
+    //  convert comma-separated values → $in
+    Object.keys(queryObj).forEach((key) => {
+      if (typeof queryObj[key] === 'string' && queryObj[key].includes(',')) {
+        queryObj[key] = {
+          $in: queryObj[key].split(',').map((val: string) => val.trim()),
+        };
+      }
+    });
 
-  let queryStr = JSON.stringify(queryObj);
+    let queryStr = JSON.stringify(queryObj);
 
-  queryStr = queryStr.replace(
-    /\b(gte|gt|lt|lte)\b/g,
-    (match) => `$${match}`,
-  );
+    queryStr = queryStr.replace(/\b(gte|gt|lt|lte)\b/g, (match) => `$${match}`);
 
-  this.mongooseQuery = this.mongooseQuery.find(JSON.parse(queryStr));
+    this.mongooseQuery = this.mongooseQuery.find(JSON.parse(queryStr));
 
-  return this;
-}
+    return this;
+  }
 
   sort(): this {
     if (this.queryString.sort) {
@@ -95,9 +86,9 @@ filter(): this {
     return this;
   }
   async count(): Promise<number> {
-   const clonedQuery = this.mongooseQuery.clone();
-  return clonedQuery.countDocuments();
-}
+    const clonedQuery = this.mongooseQuery.clone();
+    return clonedQuery.countDocuments();
+  }
 
   async exec(): Promise<T[]> {
     return this.mongooseQuery.exec();

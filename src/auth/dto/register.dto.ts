@@ -10,7 +10,7 @@ import {
   Min,
   MinLength,
 } from 'class-validator';
-import { IsInternationalPhoneNumber} from 'src/common/validators/is-phone.validator';
+import { IsInternationalPhoneNumber } from 'src/common/validators/is-phone.validator';
 
 export class RegisterDto {
   @ApiProperty({
@@ -35,7 +35,7 @@ export class RegisterDto {
   })
   @IsNotEmpty()
   @MinLength(8)
-    @Matches(
+  @Matches(
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^()[\]{}\-_=+|:;"'<>,./~`]).+$/,
     {
       message:
@@ -44,18 +44,17 @@ export class RegisterDto {
   )
   password: string;
 
-
-@IsNotEmpty()
+  @IsNotEmpty()
   @IsNumber()
   @Min(30)
   @Max(300)
   weight: number;
-@IsNotEmpty()
+  @IsNotEmpty()
   @IsNumber()
   @Min(50)
   @Max(250)
   height: number;
-@IsNotEmpty()
+  @IsNotEmpty()
   @IsNumber()
   @Min(10)
   @Max(120)
@@ -64,12 +63,8 @@ export class RegisterDto {
   @IsEnum(['male', 'female'])
   gender: string;
 
-
-
-
   @ApiProperty({
     example: '+201001234567',
-    
   })
   @IsNotEmpty()
   @IsString()
@@ -80,5 +75,4 @@ export class RegisterDto {
   @IsNotEmpty()
   @IsString()
   country: string;
-
 }

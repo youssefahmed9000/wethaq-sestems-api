@@ -1,4 +1,4 @@
- export interface IQueryBuilder<T> {
+export interface IQueryBuilder<T> {
   filter(): this;
   sort(): this;
   limitFields(): this;

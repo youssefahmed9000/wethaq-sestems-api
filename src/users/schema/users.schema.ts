@@ -7,15 +7,20 @@ import { BCRYPT_ROUNDS } from 'src/common/constants/security.constants';
 export type UserDocument = HydratedDocument<User>;
 
 @Schema({
-   timestamps:true,
+  timestamps: true,
   versionKey: false,
-
 })
 export class User {
   @Prop({ required: true, trim: true })
   fullName: string;
 
-  @Prop({ required: true, unique: true, lowercase: true, trim: true , index: true })
+  @Prop({
+    required: true,
+    unique: true,
+    lowercase: true,
+    trim: true,
+    index: true,
+  })
   email: string;
 
   @Prop({ required: true, minlength: 6, select: false })
@@ -24,16 +29,11 @@ export class User {
   @Prop({ required: true, trim: true })
   phone: string;
 
-  @Prop({ type: String, enum: UserRole, default: UserRole.PATIENT})
+  @Prop({ type: String, enum: UserRole, default: UserRole.PATIENT })
   role: UserRole;
 
   @Prop({ default: true })
   isActive: boolean;
-
-
-
-
-
 
   @Prop({
     required: true,
@@ -41,7 +41,7 @@ export class User {
   })
   gender: string;
 
-  @Prop({type: String })
+  @Prop({ type: String })
   country: string;
 
   @Prop()
@@ -53,7 +53,7 @@ export class User {
   @Prop({ select: false })
   passwordResetExpires?: Date;
 
-  @Prop({ default: false,select: false })
+  @Prop({ default: false, select: false })
   passwordResetVerified?: boolean;
 
   @Prop({ select: false })
@@ -67,7 +67,7 @@ export class User {
 
 export const UserSchema = SchemaFactory.createForClass(User);
 UserSchema.index({
- createdAt: -1
+  createdAt: -1,
 });
 
 UserSchema.pre<UserDocument>('save', async function () {

@@ -13,8 +13,8 @@ import { UploadService } from './upload.service';
     },
     StorageService,
     ExistsValidator,
-    UploadService
+    UploadService,
   ],
-  exports: [StorageService,UploadService],
+  exports: [StorageService, UploadService],
 })
 export class StorageModule {}

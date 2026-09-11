@@ -6,7 +6,6 @@ import {
   IsOptional,
   IsString,
   Matches,
-
   MinLength,
 } from 'class-validator';
 import { UserRole } from 'src/users/enums/roles.enum';
@@ -44,12 +43,8 @@ export class CreateUserDto {
   )
   password: string;
 
-
-  
-    @IsEnum(['male', 'female'])
-    gender: string;
-  
-  
+  @IsEnum(['male', 'female'])
+  gender: string;
 
   @ApiPropertyOptional({
     enum: UserRole,
@@ -72,8 +67,4 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
   country: string;
-
-
-      
-  
 }

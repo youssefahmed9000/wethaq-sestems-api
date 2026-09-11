@@ -34,12 +34,11 @@ export class UsersRepository implements IUsersRepository {
     return this.userModel.findOne({ email, _id: { $ne: excludeId } });
   }
 
- async findById(id: string): Promise<UserDocument | null> {
-  return this.userModel.findOne({
-    _id: id,
-   
-  });
-}
+  async findById(id: string): Promise<UserDocument | null> {
+    return this.userModel.findOne({
+      _id: id,
+    });
+  }
 
   async findByIdWithPassword(id: string): Promise<UserDocument | null> {
     return this.userModel.findById(id).select('+password');
@@ -68,12 +67,13 @@ export class UsersRepository implements IUsersRepository {
     return this.userModel.create(data);
   }
 
-
   async updateById(id: string, data: Partial<User>) {
-    return this.userModel.findByIdAndUpdate(id, data, {
-      returnDocument: 'after',
-      runValidators: true,
-    }).exec();
+    return this.userModel
+      .findByIdAndUpdate(id, data, {
+        returnDocument: 'after',
+        runValidators: true,
+      })
+      .exec();
   }
   async save(doc: UserDocument): Promise<UserDocument> {
     return doc.save();
@@ -84,12 +84,12 @@ export class UsersRepository implements IUsersRepository {
   }
 
   async findByEmailWithResetFields(
-  email: string,
-): Promise<UserDocument | null> {
-  return this.userModel
-    .findOne({ email })
-    .select(
-      '+passwordResetCode +passwordResetExpires +passwordResetVerified',
-    );
-}
+    email: string,
+  ): Promise<UserDocument | null> {
+    return this.userModel
+      .findOne({ email })
+      .select(
+        '+passwordResetCode +passwordResetExpires +passwordResetVerified',
+      );
+  }
 }

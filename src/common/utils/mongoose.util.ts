@@ -13,9 +13,6 @@ export function buildUserIdMatch(userId: Types.ObjectId): {
   $or: [{ userId: Types.ObjectId }, { userId: string }];
 } {
   return {
-    $or: [
-      { userId },
-      { userId: userId.toString() },
-    ],
+    $or: [{ userId }, { userId: userId.toString() }],
   };
 }

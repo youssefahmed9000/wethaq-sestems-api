@@ -39,15 +39,13 @@ export class TokenService {
     const refreshSecret =
       this.configService.getOrThrow<string>('jwt.refresh.secret');
 
-    const accessExpiresIn =
-      this.configService.getOrThrow<StringValue>(
-        'jwt.access.expiresIn',
-      );
+    const accessExpiresIn = this.configService.getOrThrow<StringValue>(
+      'jwt.access.expiresIn',
+    );
 
-    const refreshExpiresIn =
-      this.configService.getOrThrow<StringValue>(
-        'jwt.refresh.expiresIn',
-      );
+    const refreshExpiresIn = this.configService.getOrThrow<StringValue>(
+      'jwt.refresh.expiresIn',
+    );
 
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(payload, {

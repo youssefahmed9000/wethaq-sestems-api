@@ -37,19 +37,15 @@ export class WebsiteReview {
     default: false,
   })
   isPublished: boolean;
-@Prop()
-createdAt: Date;
-
-
+  @Prop()
+  createdAt: Date;
 }
 
-export const WebsiteReviewSchema =
-  SchemaFactory.createForClass(WebsiteReview);
+export const WebsiteReviewSchema = SchemaFactory.createForClass(WebsiteReview);
 
 /**
  * Indexes
  */
-
 
 // Sort latest reviews
 WebsiteReviewSchema.index({

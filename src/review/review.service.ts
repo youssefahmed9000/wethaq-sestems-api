@@ -6,13 +6,11 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 
-
 import { CreateWebsiteReviewDto } from './dto/create-review.dto';
 import { WebsiteReview, WebsiteReviewDocument } from './schema/review.schema';
 import { UpdateWebsiteReviewDto } from './dto/update-review.dto';
 import { BuildQueryDto } from 'src/common/dto/base-query.dto';
 import { ApiFeatures } from 'src/common/utils/api-features';
-
 
 @Injectable()
 export class WebsiteReviewService {
@@ -33,9 +31,7 @@ export class WebsiteReviewService {
     });
 
     if (exists) {
-      throw new ConflictException(
-        'You have already submitted a review.',
-      );
+      throw new ConflictException('You have already submitted a review.');
     }
 
     return this.reviewModel.create({
@@ -47,62 +43,58 @@ export class WebsiteReviewService {
   /**
    * Get All Published Reviews
    */
-  async findAll(query:BuildQueryDto) {
-    const baseQuery =this.reviewModel
-      .find() .populate('user', 'fullName email image').lean();
-          const features = new ApiFeatures(baseQuery, query)
-            .filter()
-            .search(['rating', 'description']);
-      
-        
-            const total = await features.count();
-      
-          features.sort().limitFields().paginate(total);
-      
-          const data = await features.exec();
-      
-          return {
-            results: data.length,
-            pagination: features.paginationResult,
-            data,
-          };
-    
-      
-     
-   
+  async findAll(query: BuildQueryDto) {
+    const baseQuery = this.reviewModel
+      .find()
+      .populate('user', 'fullName email image')
+      .lean();
+    const features = new ApiFeatures(baseQuery, query)
+      .filter()
+      .search(['rating', 'description']);
+
+    const total = await features.count();
+
+    features.sort().limitFields().paginate(total);
+
+    const data = await features.exec();
+
+    return {
+      results: data.length,
+      pagination: features.paginationResult,
+      data,
+    };
   }
 
   /**
    * Get All Published Reviews
    */
 
-   async findAllPublished(query:BuildQueryDto) {
-    const baseQuery =this.reviewModel
-      .find({isPublished:true}).populate('user', 'fullName email image').lean();
-          const features = new ApiFeatures(baseQuery, query)
-            .filter()
-            .search(['rating', 'description']);
-      
-        
-            const total = await features.count();
-      
-          features.sort().limitFields().paginate(total);
-      
-          const data = await features.exec();
-      
-          return {
-            results: data.length,
-            pagination: features.paginationResult,
-            data,
-          };
+  async findAllPublished(query: BuildQueryDto) {
+    const baseQuery = this.reviewModel
+      .find({ isPublished: true })
+      .populate('user', 'fullName email image')
+      .lean();
+    const features = new ApiFeatures(baseQuery, query)
+      .filter()
+      .search(['rating', 'description']);
+
+    const total = await features.count();
+
+    features.sort().limitFields().paginate(total);
+
+    const data = await features.exec();
+
+    return {
+      results: data.length,
+      pagination: features.paginationResult,
+      data,
+    };
   }
 
   /**
    * Get Logged User Review
    */
-  async findMyReview(
-    userId: string
-  ) {
+  async findMyReview(userId: string) {
     return this.reviewModel
       .findOne({
         user: userId,
@@ -136,24 +128,26 @@ export class WebsiteReviewService {
     return review;
   }
 
-async togglePublish(reviewId: string) {
-  const review = await this.reviewModel.findById(reviewId).select('isPublished');
+  async togglePublish(reviewId: string) {
+    const review = await this.reviewModel
+      .findById(reviewId)
+      .select('isPublished');
 
-  if (!review) {
-    throw new NotFoundException('Review not found.');
+    if (!review) {
+      throw new NotFoundException('Review not found.');
+    }
+
+    return this.reviewModel.findByIdAndUpdate(
+      reviewId,
+      {
+        isPublished: !review.isPublished,
+      },
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
   }
-
-  return this.reviewModel.findByIdAndUpdate(
-    reviewId,
-    {
-      isPublished: !review.isPublished,
-    },
-    {
-      new: true,
-      runValidators: true,
-    },
-  );
-}
 
   /**
    * Delete Review
@@ -171,30 +165,30 @@ async togglePublish(reviewId: string) {
   /**
    * Reviews Statistics
    */
-async getStatistics() {
-  const [stats] = await this.reviewModel.aggregate([
-    {
-      $match: {
-        isPublished: true,
+  async getStatistics() {
+    const [stats] = await this.reviewModel.aggregate([
+      {
+        $match: {
+          isPublished: true,
+        },
       },
-    },
-    {
-      $group: {
-        _id: null,
-        averageRating: { $avg: '$rating' },
-        totalReviews: { $sum: 1 },
+      {
+        $group: {
+          _id: null,
+          averageRating: { $avg: '$rating' },
+          totalReviews: { $sum: 1 },
+        },
       },
-    },
-  ]);
+    ]);
 
-  const result = stats ?? {
-    averageRating: 0,
-    totalReviews: 0,
-  };
+    const result = stats ?? {
+      averageRating: 0,
+      totalReviews: 0,
+    };
 
-  return {
-    averageRating: Number(result.averageRating.toFixed(2)),
-    totalReviews: result.totalReviews,
-  };
-}
+    return {
+      averageRating: Number(result.averageRating.toFixed(2)),
+      totalReviews: result.totalReviews,
+    };
+  }
 }

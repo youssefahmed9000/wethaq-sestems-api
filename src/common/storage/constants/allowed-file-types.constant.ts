@@ -10,7 +10,7 @@ export const ALLOWED_IMAGE_TYPES = [
   'image/heic',
   'image/heif',
 
-    'application/pdf',
+  'application/pdf',
 
   'application/msword',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',

@@ -1,4 +1,3 @@
-
 import { Module } from '@nestjs/common';
 import { JwtModule, JwtModuleOptions } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -19,13 +18,7 @@ import { StorageModule } from 'src/common/storage/storage.module';
 
 @Module({
   imports: [
-    
-    MongooseModule.forFeature([
-      { name: User.name, schema: UserSchema },
-      
-    ]),
-     
-
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
 
     JwtModule.registerAsync({
       inject: [ConfigService],
@@ -33,8 +26,7 @@ import { StorageModule } from 'src/common/storage/storage.module';
         secret: config.getOrThrow<string>('jwt.access.secret'),
 
         signOptions: {
-          expiresIn:
-            config.getOrThrow<StringValue>('jwt.access.expiresIn'),
+          expiresIn: config.getOrThrow<StringValue>('jwt.access.expiresIn'),
         },
       }),
     }),
@@ -45,13 +37,18 @@ import { StorageModule } from 'src/common/storage/storage.module';
 
   controllers: [AuthController],
 
-  providers: [AuthService, JwtStrategy,UsersRepository,TokenService,AuthSessionService,
-     {
-      provide: USERS_REPOSITORY,  
+  providers: [
+    AuthService,
+    JwtStrategy,
+    UsersRepository,
+    TokenService,
+    AuthSessionService,
+    {
+      provide: USERS_REPOSITORY,
       useClass: UsersRepository,
     },
   ],
 
-  exports: [AuthService, JwtModule,TokenService,AuthSessionService],
+  exports: [AuthService, JwtModule, TokenService, AuthSessionService],
 })
 export class AuthModule {}

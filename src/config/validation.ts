@@ -2,9 +2,7 @@ import * as Joi from 'joi';
 
 export const validationSchema = Joi.object({
   // App
-  NODE_ENV: Joi.string()
-    .valid('development', 'production')
-    .required(),
+  NODE_ENV: Joi.string().valid('development', 'production').required(),
 
   PORT: Joi.number().required(),
 
@@ -34,5 +32,4 @@ export const validationSchema = Joi.object({
   // Frontend URL .uri()
   // FRONTEND_URL: Joi.string().optional(),
   // REDIS_URL:Joi.string().uri().optional(),
-
 });

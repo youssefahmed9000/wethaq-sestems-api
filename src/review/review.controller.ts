@@ -21,9 +21,7 @@ import { CreateWebsiteReviewDto } from './dto/create-review.dto';
 import { UpdateWebsiteReviewDto } from './dto/update-review.dto';
 import { BuildQueryDto } from 'src/common/dto/base-query.dto';
 
-import {
-  CurrentUserId,
-} from 'src/common/decorators/current-user.decorator';
+import { CurrentUserId } from 'src/common/decorators/current-user.decorator';
 
 import { Public } from 'src/common/decorators/public.decorator';
 import { Roles } from 'src/common/decorators/roles.decorator';
@@ -34,9 +32,7 @@ import { ParseObjectIdPipe } from '@nestjs/mongoose';
 @ApiTags('Reviews')
 @Controller('reviews')
 export class WebsiteReviewController {
-  constructor(
-    private readonly websiteReviewService: WebsiteReviewService,
-  ) {}
+  constructor(private readonly websiteReviewService: WebsiteReviewService) {}
 
   // =========================
   // Create Review
@@ -45,10 +41,7 @@ export class WebsiteReviewController {
   @ApiOperation({ summary: 'Create a website review' })
   @ApiResponse({ status: 201, description: 'Review created successfully' })
   @Post()
-  create(
-    @CurrentUserId() userId: string,
-    @Body() dto: CreateWebsiteReviewDto,
-  ) {
+  create(@CurrentUserId() userId: string, @Body() dto: CreateWebsiteReviewDto) {
     return this.websiteReviewService.create(userId, dto);
   }
 
@@ -70,10 +63,7 @@ export class WebsiteReviewController {
   @ApiOperation({ summary: 'Update logged-in user review' })
   @ApiResponse({ status: 200, description: 'Review updated' })
   @Patch('update')
-  update(
-    @CurrentUserId() userId: string,
-    @Body() dto: UpdateWebsiteReviewDto,
-  ) {
+  update(@CurrentUserId() userId: string, @Body() dto: UpdateWebsiteReviewDto) {
     return this.websiteReviewService.update(userId, dto);
   }
 
@@ -97,9 +87,7 @@ export class WebsiteReviewController {
   @ApiResponse({ status: 200 })
   @Roles(UserRole.ADMIN, UserRole.DOCTOR)
   @Patch(':id/toggle-publish')
-  togglePublish(
-    @Param('id', ParseObjectIdPipe) reviewId: string,
-  ) {
+  togglePublish(@Param('id', ParseObjectIdPipe) reviewId: string) {
     return this.websiteReviewService.togglePublish(reviewId);
   }
 

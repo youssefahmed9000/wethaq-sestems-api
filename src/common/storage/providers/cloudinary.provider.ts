@@ -33,7 +33,12 @@ export class CloudinaryProvider implements IStorageProvider {
         : undefined;
 
       const uploadStream = cloudinary.uploader.upload_stream(
-        { folder, resource_type, type: options?.isPrivate ? 'private' : 'upload', transformation },
+        {
+          folder,
+          resource_type,
+          type: options?.isPrivate ? 'private' : 'upload',
+          transformation,
+        },
         (error, result) => {
           if (error) {
             this.logger.error('Cloudinary upload error:', error);
@@ -47,7 +52,9 @@ export class CloudinaryProvider implements IStorageProvider {
           if (!result?.secure_url) {
             this.logger.error('Cloudinary upload returned no URL:', result);
             return reject(
-              new BadRequestException('Upload did not return a valid file URL.'),
+              new BadRequestException(
+                'Upload did not return a valid file URL.',
+              ),
             );
           }
 
