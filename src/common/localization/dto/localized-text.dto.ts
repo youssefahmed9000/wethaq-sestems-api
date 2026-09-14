@@ -8,6 +8,5 @@ export class LocalizedTextDto {
 
   @ApiProperty({ example: 'Office Name' })
   @IsString()
-  
   en: string;
 }

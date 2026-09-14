@@ -1,16 +1,11 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-
-import { CreateAboutUsDto } from './dto/create-about-us.dto';
 import { UpdateAboutUsDto } from './dto/update-about-us.dto';
 import { AboutUs, AboutUsDocument } from './schema/about-us.schema';
 import { UploadService } from 'src/common/storage/upload.service';
-import { AboutUsFiles } from './interfaces/about-us-files.interface';
+
+const SINGLETON_FILTER = { singletonKey: 'about-us' };
 
 @Injectable()
 export class AboutUsService {
@@ -20,95 +15,44 @@ export class AboutUsService {
     private readonly uploadService: UploadService,
   ) {}
 
-  private async findAboutUsOrFail(): Promise<AboutUsDocument> {
-    const aboutUs = await this.aboutUsModel.findOne().exec();
-
-    if (!aboutUs) {
-      throw new NotFoundException('About Us not found');
-    }
-
-    return aboutUs;
+  async getAboutUs(): Promise<AboutUsDocument | null> {
+    return this.aboutUsModel.findOne(SINGLETON_FILTER).lean();
   }
 
-  async create(
-    dto: CreateAboutUsDto,
-    files: AboutUsFiles,
+  async updateAboutUs(
+    dto: UpdateAboutUsDto,
+    imageFile?: Express.Multer.File,
   ): Promise<AboutUsDocument> {
-    const exists = await this.aboutUsModel.exists({}).exec();
+    const updatePayload: Record<string, unknown> = { ...dto };
 
-    if (exists) {
-      throw new ConflictException('About Us already exists');
+    if (imageFile) {
+      const existing = await this.aboutUsModel
+        .findOne(SINGLETON_FILTER)
+        .lean();
+
+      const newImageUrl = await this.uploadService.uploadSingle(imageFile);
+      updatePayload.image = newImageUrl;
+
+      if (existing?.image) {
+        try {
+          await this.uploadService.deleteImages([existing.image]);
+        } catch (error) {
+          console.error('Failed to delete old about-us image:', error);
+        }
+      }
     }
 
-    // Uploads
-
-    const [founderImage, certificationImages] = await Promise.all([
-      files.founderImage?.length
-        ? this.uploadService.uploadSingle(files.founderImage[0])
-        : Promise.resolve(undefined),
-
-      files.certificationImages?.length
-        ? this.uploadService.upload(files.certificationImages)
-        : Promise.resolve([]),
-    ]);
-    const aboutUs = await this.aboutUsModel.create({
-      ...dto,
-      founderImage,
-      certificationImages,
-    });
-    return aboutUs;
-  }
-
-  async findOne() {
-    const aboutUs = await this.aboutUsModel.findOne().lean().exec();
-
-    if (!aboutUs) {
-      throw new NotFoundException('About Us not found');
+    try {
+      return await this.aboutUsModel
+        .findOneAndUpdate(
+          SINGLETON_FILTER,
+          { $set: updatePayload, $setOnInsert: SINGLETON_FILTER },
+          { new: true, upsert: true, runValidators: true },
+        )
+        .exec();
+    } catch (error) {
+   
+      throw error;
     }
-
-    return aboutUs;
-  }
-
-  async update(dto: UpdateAboutUsDto, files: AboutUsFiles) {
-    const aboutUs = await this.findAboutUsOrFail();
-
-    if (files.founderImage?.length) {
-      const [image] = await this.uploadService.replace(
-        aboutUs.founderImage ? [aboutUs.founderImage] : [],
-        files.founderImage,
-      );
-
-      aboutUs.founderImage = image;
-    }
-
-    if (files.certificationImages?.length) {
-      aboutUs.certificationImages = await this.uploadService.replace(
-        aboutUs.certificationImages,
-        files.certificationImages,
-      );
-    }
-
-    aboutUs.set(dto);
-
-    return aboutUs.save();
-  }
-
-  async remove() {
-    const aboutUs = await this.findAboutUsOrFail();
-
-    const images = [
-      ...(aboutUs.founderImage ? [aboutUs.founderImage] : []),
-      ...aboutUs.certificationImages,
-    ];
-
-    if (images.length) {
-      await this.uploadService.deleteImages(images);
-    }
-
-    await aboutUs.deleteOne();
-
-    return {
-      message: 'About Us deleted successfully',
-    };
   }
 }
