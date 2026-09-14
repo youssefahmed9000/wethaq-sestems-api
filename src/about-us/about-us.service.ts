@@ -26,33 +26,30 @@ export class AboutUsService {
     const updatePayload: Record<string, unknown> = { ...dto };
 
     if (imageFile) {
-      const existing = await this.aboutUsModel
-        .findOne(SINGLETON_FILTER)
-        .lean();
+      const existing = await this.aboutUsModel.findOne(SINGLETON_FILTER).lean();
 
       const newImageUrl = await this.uploadService.uploadSingle(imageFile);
+
       updatePayload.image = newImageUrl;
 
       if (existing?.image) {
-        try {
-          await this.uploadService.deleteImages([existing.image]);
-        } catch (error) {
-          console.error('Failed to delete old about-us image:', error);
-        }
+        await this.uploadService.deleteImages([existing.image]);
       }
     }
 
-    try {
-      return await this.aboutUsModel
-        .findOneAndUpdate(
-          SINGLETON_FILTER,
-          { $set: updatePayload, $setOnInsert: SINGLETON_FILTER },
-          { new: true, upsert: true, runValidators: true },
-        )
-        .exec();
-    } catch (error) {
-   
-      throw error;
-    }
+    return this.aboutUsModel
+      .findOneAndUpdate(
+        SINGLETON_FILTER,
+        {
+          $set: updatePayload,
+          $setOnInsert: SINGLETON_FILTER,
+        },
+        {
+          new: true,
+          upsert: true,
+          runValidators: true,
+        },
+      )
+      .exec();
   }
 }
