@@ -16,6 +16,8 @@ import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
 
 import { ReviewsModule } from './review/review.module';
 import { AboutUsModule } from './about-us/about-us.module';
+import { LocalizationModule } from './common/localization/localization.module';
+import { SettingsModule } from './settings/settings.module';
 
 @Module({
   imports: [
@@ -61,6 +63,8 @@ import { AboutUsModule } from './about-us/about-us.module';
     ReviewsModule,
     AboutUsModule,
     MailModule,
+    LocalizationModule,
+    SettingsModule,
   ],
 
   providers: [
