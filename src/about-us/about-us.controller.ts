@@ -26,7 +26,7 @@ import {
 } from '@nestjs/swagger';
 @ApiTags('About Us')
 @ApiBearerAuth()
-@Roles(UserRole.DOCTOR, UserRole.ADMIN)
+@Roles( UserRole.ADMIN)
 @Controller('about-us')
 export class AboutUsController {
   constructor(private readonly aboutUsService: AboutUsService) {}

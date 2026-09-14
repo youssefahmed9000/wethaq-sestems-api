@@ -85,7 +85,7 @@ export class WebsiteReviewController {
   @ApiOperation({ summary: 'Toggle publish status (Admin)' })
   @ApiParam({ name: 'id', description: 'Review ID' })
   @ApiResponse({ status: 200 })
-  @Roles(UserRole.ADMIN, UserRole.DOCTOR)
+  @Roles(UserRole.ADMIN)
   @Patch(':id/toggle-publish')
   togglePublish(@Param('id', ParseObjectIdPipe) reviewId: string) {
     return this.websiteReviewService.togglePublish(reviewId);
@@ -97,7 +97,7 @@ export class WebsiteReviewController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all reviews (Admin)' })
   @ApiResponse({ status: 200 })
-  @Roles(UserRole.ADMIN, UserRole.DOCTOR)
+  @Roles(UserRole.ADMIN)
   @Get()
   findAll(@Query() query: BuildQueryDto) {
     return this.websiteReviewService.findAll(query);

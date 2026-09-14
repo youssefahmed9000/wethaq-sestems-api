@@ -35,7 +35,7 @@ import { Public } from 'src/common/decorators/public.decorator';
 
 @ApiTags('Users')
 @ApiBearerAuth()
-@Roles(UserRole.ADMIN, UserRole.DOCTOR)
+@Roles(UserRole.ADMIN)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -57,7 +57,7 @@ export class UsersController {
   }
   @ApiOperation({ summary: 'Change user password' })
   @ApiOkResponse({ description: 'Password changed  successfully' })
-  @Roles(UserRole.ADMIN, UserRole.DOCTOR, UserRole.PATIENT)
+  @Roles(UserRole.ADMIN)
   @Patch('change-password')
   async changePassword(
     @CurrentUserId() userId: string,
@@ -79,7 +79,7 @@ export class UsersController {
   @ApiOperation({ summary: 'Update user' })
   @ApiOkResponse({ type: UserResponseDto })
   @UseInterceptors(FilesInterceptor('images', 1))
-  @Roles(UserRole.ADMIN, UserRole.DOCTOR, UserRole.PATIENT)
+  @Roles(UserRole.ADMIN, UserRole.USER)
   @Patch('update-profile')
   async update(
     @CurrentUserId() id: string,
