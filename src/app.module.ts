@@ -20,6 +20,7 @@ import { LocalizationModule } from './common/localization/localization.module';
 import { SettingsModule } from './settings/settings.module';
 import { MainSectionModule } from './main-section/main-section.module';
 import { StatisticsModule } from './statistics/statistics.module';
+import { ServicesModule } from './services/services.module';
 
 @Module({
   imports: [
@@ -69,6 +70,7 @@ import { StatisticsModule } from './statistics/statistics.module';
     SettingsModule,
     MainSectionModule,
     StatisticsModule,
+    ServicesModule,
   ],
 
   providers: [
