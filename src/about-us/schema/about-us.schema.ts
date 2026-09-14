@@ -1,67 +1,40 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
+import {
+  LocalizedText,
+  LocalizedTextSchema,
+} from 'src/common/localization/schemas/localized-text.schema';
 
-export type AboutUsDocument = HydratedDocument<AboutUs>;
-
-@Schema({
-  timestamps: true,
-  versionKey: false,
-})
+@Schema({ timestamps: true })
 export class AboutUs {
-  @Prop({
-    required: true,
-    trim: true,
-  })
-  title: string;
 
-  @Prop({
-    required: true,
-    trim: true,
-  })
-  description: string;
+  @Prop({ required: true, unique: true, default: 'about-us' })
+  singletonKey: string;
 
-  @Prop({
-    trim: true,
-    default: null,
-  })
-  founderImage?: string;
+  @Prop({ type: LocalizedTextSchema, required: true })
+  tag: LocalizedText;
 
-  @Prop({
-    type: [String],
-    default: [],
-  })
-  certificationImages: string[];
+  @Prop({ type: LocalizedTextSchema, required: true })
+  heading: LocalizedText;
 
-  @Prop({
-    required: true,
-    trim: true,
-    lowercase: true,
-  })
-  email: string;
+  @Prop({ type: LocalizedTextSchema, required: true })
+  paragraph1: LocalizedText;
 
-  @Prop({
-    trim: true,
-    default: null,
-  })
-  facebook?: string;
+  @Prop({ type: LocalizedTextSchema, required: true })
+  paragraph2: LocalizedText;
 
-  @Prop({
-    trim: true,
-    default: null,
-  })
-  instagram?: string;
+  @Prop({ type: LocalizedTextSchema, required: true })
+  vision: LocalizedText;
 
-  @Prop({
-    trim: true,
-    default: null,
-  })
-  whatsapp?: string;
+  @Prop({ type: LocalizedTextSchema, required: true })
+  mission: LocalizedText;
 
-  @Prop({
-    trim: true,
-    default: null,
-  })
-  tiktok?: string;
+  @Prop({ type: LocalizedTextSchema, required: true })
+  values: LocalizedText;
+
+  @Prop()
+  image?: string; // Cloudinary URL
 }
 
+export type AboutUsDocument = HydratedDocument<AboutUs>;
 export const AboutUsSchema = SchemaFactory.createForClass(AboutUs);
