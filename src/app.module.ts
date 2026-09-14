@@ -19,6 +19,7 @@ import { AboutUsModule } from './about-us/about-us.module';
 import { LocalizationModule } from './common/localization/localization.module';
 import { SettingsModule } from './settings/settings.module';
 import { MainSectionModule } from './main-section/main-section.module';
+import { StatisticsModule } from './statistics/statistics.module';
 
 @Module({
   imports: [
@@ -67,6 +68,7 @@ import { MainSectionModule } from './main-section/main-section.module';
     LocalizationModule,
     SettingsModule,
     MainSectionModule,
+    StatisticsModule,
   ],
 
   providers: [
