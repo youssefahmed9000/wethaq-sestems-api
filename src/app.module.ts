@@ -18,6 +18,7 @@ import { ReviewsModule } from './review/review.module';
 import { AboutUsModule } from './about-us/about-us.module';
 import { LocalizationModule } from './common/localization/localization.module';
 import { SettingsModule } from './settings/settings.module';
+import { MainSectionModule } from './main-section/main-section.module';
 
 @Module({
   imports: [
@@ -65,6 +66,7 @@ import { SettingsModule } from './settings/settings.module';
     MailModule,
     LocalizationModule,
     SettingsModule,
+    MainSectionModule,
   ],
 
   providers: [
