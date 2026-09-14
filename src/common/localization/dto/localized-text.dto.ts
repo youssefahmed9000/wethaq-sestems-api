@@ -1,11 +1,9 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class LocalizedTextDto {
-  @IsNotEmpty()
-  @IsString()
-  en: string;
-
-  @IsNotEmpty()
-  @IsString()
+  @ApiProperty({ example: 'اسم المكتب' })
   ar: string;
+
+  @ApiProperty({ example: 'Office Name' })
+  en: string;
 }
