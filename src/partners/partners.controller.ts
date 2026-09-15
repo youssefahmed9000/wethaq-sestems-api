@@ -26,28 +26,6 @@ import { PartnerService } from './partners.service';
 export class PartnerController {
   constructor(private readonly partnerService: PartnerService) {}
 
-  @Public()
-  @Get()
-  @ApiOperation({ summary: 'Get all partners (public, localized)' })
-  findAll(@Query() query: Record<string, any>) {
-    return this.partnerService.findAll(query);
-  }
-
-  @Public()
-  @Get(':id')
-  @ApiOperation({ summary: 'Get a single partner (public, localized)' })
-  findOne(@Param('id') id: string) {
-    return this.partnerService.findOne(id);
-  }
-
-  @Roles(UserRole.ADMIN)
-  @SkipLocalize()
-  @Get('admin')
-  @ApiOperation({ summary: 'Get all partners for admin (bilingual)' })
-  findAllAdmin(@Query() query: Record<string, any>) {
-    return this.partnerService.findAll(query);
-  }
-
   @Roles(UserRole.ADMIN)
   @SkipLocalize()
   @Post()
@@ -59,6 +37,27 @@ export class PartnerController {
     @UploadedFile() image?: Express.Multer.File,
   ) {
     return this.partnerService.create(dto, image);
+  }
+
+  @Public()
+  @Get()
+  @ApiOperation({ summary: 'Get all partners (public, localized)' })
+  findAll(@Query() query: Record<string, any>) {
+    return this.partnerService.findAll(query);
+  }
+  @Roles(UserRole.ADMIN)
+  @SkipLocalize()
+  @Get('admin')
+  @ApiOperation({ summary: 'Get all partners for admin (bilingual)' })
+  findAllAdmin(@Query() query: Record<string, any>) {
+    return this.partnerService.findAll(query);
+  }
+
+  @Public()
+  @Get(':id')
+  @ApiOperation({ summary: 'Get a single partner (public, localized)' })
+  findOne(@Param('id') id: string) {
+    return this.partnerService.findOne(id);
   }
 
   @Roles(UserRole.ADMIN)

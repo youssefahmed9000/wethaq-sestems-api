@@ -25,6 +25,7 @@ import { TeamModule } from './team/team.module';
 import { BlogModule } from './blog/blog.module';
 import { ContactModule } from './contact/contact.module';
 import { PartnersModule } from './partners/partners.module';
+import { WhyUsModule } from './why-us/why-us.module';
 
 @Module({
   imports: [
@@ -79,6 +80,7 @@ import { PartnersModule } from './partners/partners.module';
     BlogModule,
     ContactModule,
     PartnersModule,
+    WhyUsModule,
   ],
 
   providers: [
