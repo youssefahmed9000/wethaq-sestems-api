@@ -23,6 +23,7 @@ import { StatisticsModule } from './statistics/statistics.module';
 import { ServicesModule } from './services/services.module';
 import { TeamModule } from './team/team.module';
 import { BlogModule } from './blog/blog.module';
+import { ContactModule } from './contact/contact.module';
 
 @Module({
   imports: [
@@ -75,6 +76,7 @@ import { BlogModule } from './blog/blog.module';
     ServicesModule,
     TeamModule,
     BlogModule,
+    ContactModule,
   ],
 
   providers: [
