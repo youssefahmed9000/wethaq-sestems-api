@@ -74,6 +74,7 @@ export class ApiFeatures<T> implements IQueryBuilder<T> {
     const page = parseInt(this.queryString.page) || 1;
     const limit = parseInt(this.queryString.limit) || 10;
     const skip = (page - 1) * limit;
+    const results = totalDocuments;
 
     this.mongooseQuery = this.mongooseQuery.skip(skip).limit(limit);
 
@@ -81,6 +82,7 @@ export class ApiFeatures<T> implements IQueryBuilder<T> {
       currentPage: page,
       limit,
       numberOfPages: Math.ceil(totalDocuments / limit),
+      results,
     };
 
     return this;

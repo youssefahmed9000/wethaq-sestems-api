@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import { Service, ServiceDocument } from './schemas/service.schema';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
-import { ApiFeatures } from 'src/common/utils/api-features'; // ⚠️ confirm actual path
+import { ApiFeatures } from 'src/common/utils/api-features'; 
 import { UploadService } from 'src/common/storage/upload.service';
 import { BuildQueryDto } from 'src/common/dto/base-query.dto';
 
