@@ -28,6 +28,20 @@ import { BuildQueryDto } from 'src/common/dto/base-query.dto';
 export class StatisticsController {
   constructor(private readonly statisticsService: StatisticsService) {}
 
+  
+  @Post('create')
+  @Roles(UserRole.ADMIN)
+  @ApiOperation({
+    summary: 'Create a new statistic',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Statistic created successfully.',
+  })
+  create(@Body() dto: CreateStatisticDto) {
+    return this.statisticsService.create(dto);
+  }
+
   @Public()
   @Get()
   @ApiOperation({
@@ -55,18 +69,6 @@ export class StatisticsController {
     return this.statisticsService.findOne(id);
   }
 
-  @Post('create')
-  @Roles(UserRole.ADMIN)
-  @ApiOperation({
-    summary: 'Create a new statistic',
-  })
-  @ApiResponse({
-    status: 201,
-    description: 'Statistic created successfully.',
-  })
-  create(@Body() dto: CreateStatisticDto) {
-    return this.statisticsService.create(dto);
-  }
 
   @Patch(':id')
   @Roles(UserRole.ADMIN)

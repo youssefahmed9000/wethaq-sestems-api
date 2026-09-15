@@ -26,28 +26,6 @@ import { SkipLocalize } from 'src/common/localization/decorators/skip-localize.d
 export class TeamController {
   constructor(private readonly teamService: TeamService) {}
 
-  @Public()
-  @Get()
-  @ApiOperation({ summary: 'Get all team members (public, localized)' })
-  findAll(@Query() query: Record<string, any>) {
-    return this.teamService.findAll(query);
-  }
-
-  @Public()
-  @Get(':id')
-  @ApiOperation({ summary: 'Get a single team member (public, localized)' })
-  findOne(@Param('id') id: string) {
-    return this.teamService.findOne(id);
-  }
-
-  @Roles(UserRole.ADMIN)
-  @SkipLocalize()
-  @Get('admin')
-  @ApiOperation({ summary: 'Get all team members for admin (bilingual)' })
-  findAllAdmin(@Query() query: Record<string, any>) {
-    return this.teamService.findAll(query);
-  }
-
   @Roles(UserRole.ADMIN)
   @SkipLocalize()
   @Post()
@@ -60,6 +38,31 @@ export class TeamController {
   ) {
     return this.teamService.create(dto, image);
   }
+
+
+  @Public()
+  @Get()
+  @ApiOperation({ summary: 'Get all team members (public, localized)' })
+  findAll(@Query() query: Record<string, any>) {
+    return this.teamService.findAll(query);
+  }
+   @Roles(UserRole.ADMIN)
+  @SkipLocalize()
+  @Get('admin')
+  @ApiOperation({ summary: 'Get all team members for admin (bilingual)' })
+  findAllAdmin(@Query() query: Record<string, any>) {
+    return this.teamService.findAll(query);
+  }
+
+
+  @Public()
+  @Get(':id')
+  @ApiOperation({ summary: 'Get a single team member (public, localized)' })
+  findOne(@Param('id') id: string) {
+    return this.teamService.findOne(id);
+  }
+
+ 
 
   @Roles(UserRole.ADMIN)
   @SkipLocalize()
