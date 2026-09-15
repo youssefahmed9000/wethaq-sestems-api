@@ -21,6 +21,7 @@ import { SettingsModule } from './settings/settings.module';
 import { MainSectionModule } from './main-section/main-section.module';
 import { StatisticsModule } from './statistics/statistics.module';
 import { ServicesModule } from './services/services.module';
+import { TeamModule } from './team/team.module';
 
 @Module({
   imports: [
@@ -71,6 +72,7 @@ import { ServicesModule } from './services/services.module';
     MainSectionModule,
     StatisticsModule,
     ServicesModule,
+    TeamModule,
   ],
 
   providers: [
