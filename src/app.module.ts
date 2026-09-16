@@ -26,6 +26,7 @@ import { BlogModule } from './blog/blog.module';
 import { ContactModule } from './contact/contact.module';
 import { PartnersModule } from './partners/partners.module';
 import { WhyUsModule } from './why-us/why-us.module';
+import { RedisModule } from './common/redis/redis.module';
 
 @Module({
   imports: [
@@ -81,6 +82,7 @@ import { WhyUsModule } from './why-us/why-us.module';
     ContactModule,
     PartnersModule,
     WhyUsModule,
+    RedisModule
   ],
 
   providers: [

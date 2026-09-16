@@ -14,6 +14,7 @@ import { SkipLocalize } from 'src/common/localization/decorators/skip-localize.d
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { UserRole } from 'src/users/enums/roles.enum';
 import { Public } from 'src/common/decorators/public.decorator';
+// import { SkipThrottle } from '@nestjs/throttler';
 
 @ApiTags('Main Section')
 @Controller('main-section')
@@ -21,6 +22,7 @@ export class MainSectionController {
   constructor(private readonly mainSectionService: MainSectionService) {}
 
   @Public()
+  // @SkipThrottle()
   @Get()
   @ApiOperation({
     summary: 'Get main section',
@@ -34,6 +36,7 @@ export class MainSectionController {
     enum: ['ar', 'en'],
     example: 'ar',
   })
+   
 
   findPublic() {
     return this.mainSectionService.getMainSection();

@@ -37,6 +37,7 @@ import { UserRole } from './enums/roles.enum';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+  
   @ApiOperation({ summary: 'create new user' })
   @ApiCreatedResponse({ description: 'User created successfully' })
   @Post('create')
