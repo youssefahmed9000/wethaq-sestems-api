@@ -1,21 +1,21 @@
 name: CI
 
 on:
-  push:
-    branches-ignore: [main]
+  push: #trigger on push to any branch except main
+    branches-ignore: [main] 
   pull_request:
     branches: [main]
 
 jobs:
   lint-test-build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  #run on ubuntu-latest runner
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7.0.1
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7.0.0
         with:
           node-version: '22'
           cache: 'npm'
@@ -46,7 +46,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7.0.1
 
       - name: Build image (default/last stage — no --target)
         uses: docker/build-push-action@v6

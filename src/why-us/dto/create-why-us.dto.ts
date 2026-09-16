@@ -25,11 +25,5 @@ export class CreateWhyUsDto {
   @ValidateNested()
   description: LocalizedTextDto;
 
-  @ApiProperty({
-    type: 'string',
-    format: 'binary',
-    required: false,
-    description: 'Icon/image file for the item',
-  })
-  image?: any;
+
 }
