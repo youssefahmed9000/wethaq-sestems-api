@@ -7,12 +7,14 @@ import { UpdateServiceDto } from './dto/update-service.dto';
 import { ApiFeatures } from 'src/common/utils/api-features'; 
 import { UploadService } from 'src/common/storage/upload.service';
 import { BuildQueryDto } from 'src/common/dto/base-query.dto';
+import { SubService, SubServiceDocument } from 'src/sub-services/schemas/sub-service.schema';
 
 @Injectable()
 export class ServicesService {
   constructor(
     @InjectModel(Service.name)
     private readonly serviceModel: Model<ServiceDocument>,
+     @InjectModel(SubService.name) private readonly subServiceModel: Model<SubServiceDocument>,
     private readonly uploadService: UploadService,
   ) {}
 
@@ -106,17 +108,30 @@ async update(id: string, dto: UpdateServiceDto, file?: Express.Multer.File) {
   return existing.save();
 }
 
-  async remove(id: string): Promise<{message: string}> {
-    const service = await this.serviceModel.findByIdAndDelete(id);
+async remove(id: string): Promise<{ message: string }> {
+  const session = await this.serviceModel.db.startSession();
+  let deletedService: ServiceDocument | null = null;
 
-    if (!service) {
-      throw new NotFoundException('Service not found');
-    }
+  try {
+    await session.withTransaction(async () => {
+      deletedService = await this.serviceModel
+        .findByIdAndDelete(id)
+        .session(session);
 
-    if (service.image) {
-      await this.uploadService.deleteImages([service.image]);
-    }
+      if (!deletedService) {
+        throw new NotFoundException('Service not found');
+      }
 
-    return { message: 'Service deleted successfully' };
+      await this.subServiceModel.deleteMany({ service: id }).session(session);
+    });
+  } finally {
+    await session.endSession();
   }
+
+  if (deletedService!.image) {
+    await this.uploadService.deleteImages([deletedService!.image]);
+  }
+
+  return { message: 'Service deleted successfully' };
+}
 }
