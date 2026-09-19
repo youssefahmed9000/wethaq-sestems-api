@@ -16,13 +16,16 @@ export class SettingsService {
     const settings = await this.settingsModel.findOne().lean();
     if (settings) return settings;
 
+    // أول تشغيل للسيستم: نعمل سجل فاضي بقيم مبدئية
     const created = await this.settingsModel.create({
       officeName: { en: '', ar: '' },
       tagline: { en: '', ar: '' },
       mainPhone: '',
       whatsapp: '',
       email: '',
-    
+      riyadhAddress: { en: '', ar: '' },
+      jeddahAddress: { en: '', ar: '' },
+      dammamAddress: { en: '', ar: '' },
     });
     return created.toObject();
   }
