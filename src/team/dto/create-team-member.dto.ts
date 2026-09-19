@@ -1,4 +1,4 @@
-import { IsOptional } from 'class-validator';
+import { IsInt, IsOptional, Min } from 'class-validator';
 import { ValidateNested } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
@@ -37,4 +37,14 @@ export class CreateTeamMemberDto {
   @ParseJsonField(LocalizedTextDto)
   @ValidateNested()
   experience: LocalizedTextDto;
+
+
+  @ApiPropertyOptional({
+    description: 'Order of the team member in the list (default is 0)',
+    example: '1',
+  })
+@IsInt()
+@Min(1) // 
+@IsOptional()
+order?: number;
 }

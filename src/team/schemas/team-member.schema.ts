@@ -4,7 +4,7 @@ import {
   LocalizedText,
   LocalizedTextSchema,
 } from 'src/common/localization/schemas/localized-text.schema';
-
+export const NO_ORDER = Number.MAX_SAFE_INTEGER;
 @Schema({ timestamps: true })
 export class TeamMember {
   @Prop({ type: LocalizedTextSchema, required: true })
@@ -18,6 +18,9 @@ export class TeamMember {
 
   @Prop({ type: LocalizedTextSchema, required: true })
   experience: LocalizedText;
+
+  @Prop({ default: NO_ORDER })
+  order: number; 
 
   @Prop()
   image?: string; // Cloudinary URL

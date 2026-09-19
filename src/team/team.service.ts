@@ -25,6 +25,10 @@ export class TeamService {
   }
 
   async findAll(query: BuildQueryDto) {
+    if (!query.sort) {
+      query.sort = 'order,-createdAt';
+    }
+
     const baseQuery = this.teamMemberModel.find().lean();
 
     const features = new ApiFeatures<TeamMember>(baseQuery, query)
@@ -38,11 +42,7 @@ export class TeamService {
 
     const data = await features.exec();
 
-    return {
-      pagination: features.paginationResult,
-      data,
-      
-    };
+    return { pagination: features.paginationResult, data };
   }
 
   async findOne(id: string) {
