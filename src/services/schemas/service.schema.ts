@@ -13,7 +13,7 @@ export class Service {
   @Prop({ type: LocalizedTextSchema, required: true })
   description: LocalizedText;
 
-  @Prop({ required: true, unique: true, trim: true, lowercase: true })
+  @Prop({ unique: true, trim: true, lowercase: true })
   slug: string;
 
   @Prop()
