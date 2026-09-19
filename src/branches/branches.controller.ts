@@ -36,6 +36,13 @@ export class BranchesController {
   findAll(@Query() query: BuildQueryDto) {
     return this.branchesService.findAll(query);
   }
+  @Roles(UserRole.ADMIN)
+  @SkipLocalize()
+  @Get('admin')
+  @ApiOperation({ summary: 'Get all branches for admin' })
+  findAllAdmin(@Query() query: BuildQueryDto) {
+    return this.branchesService.findAll(query);
+  }
 
   @Public()
   @Get(':id')
@@ -45,13 +52,7 @@ export class BranchesController {
     return this.branchesService.findOne(id);
   }
 
-  @Roles(UserRole.ADMIN)
-  @SkipLocalize()
-  @Get('admin')
-  @ApiOperation({ summary: 'Get all branches for admin' })
-  findAllAdmin(@Query() query: BuildQueryDto) {
-    return this.branchesService.findAll(query);
-  }
+
 
   @Roles(UserRole.ADMIN)
   @SkipLocalize()
