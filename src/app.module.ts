@@ -28,6 +28,7 @@ import { PartnersModule } from './partners/partners.module';
 import { WhyUsModule } from './why-us/why-us.module';
 import { RedisModule } from './common/redis/redis.module';
 import { SubServicesModule } from './sub-services/sub-services.module';
+import { BranchesModule } from './branches/branches.module';
 
 @Module({
   imports: [
@@ -84,7 +85,8 @@ import { SubServicesModule } from './sub-services/sub-services.module';
     PartnersModule,
     WhyUsModule,
     RedisModule,
-   SubServicesModule
+   SubServicesModule,
+   BranchesModule
   ],
 
   providers: [

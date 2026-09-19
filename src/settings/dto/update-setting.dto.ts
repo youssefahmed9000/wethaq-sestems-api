@@ -49,21 +49,5 @@ export class UpdateSettingsDto {
   @IsEmail()
   email?: string;
 
-  @ApiPropertyOptional({ type: () => LocalizedTextDto })
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => LocalizedTextDto)
-  riyadhAddress?: LocalizedTextDto;
 
-  @ApiPropertyOptional({ type: () => LocalizedTextDto })
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => LocalizedTextDto)
-  jeddahAddress?: LocalizedTextDto;
-
-  @ApiPropertyOptional({ type: () => LocalizedTextDto })
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => LocalizedTextDto)
-  dammamAddress?: LocalizedTextDto;
 }

@@ -27,14 +27,7 @@ export class Settings {
   @Prop({ required: true, lowercase: true, trim: true })
   email: string;
 
-  @Prop({ type: LocalizedTextSchema, required: true })
-  riyadhAddress: LocalizedText;
 
-  @Prop({ type: LocalizedTextSchema, required: true })
-  jeddahAddress: LocalizedText;
-
-  @Prop({ type: LocalizedTextSchema, required: true })
-  dammamAddress: LocalizedText;
 }
 
 export const SettingsSchema = SchemaFactory.createForClass(Settings);
