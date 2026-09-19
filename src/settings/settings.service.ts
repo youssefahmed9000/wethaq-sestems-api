@@ -22,6 +22,7 @@ export class SettingsService {
       mainPhone: '',
       whatsapp: '',
       email: '',
+      extraPhone:''
     
     });
     return created.toObject();
